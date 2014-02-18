@@ -1,3 +1,9 @@
+/*
+    seven_segment display from Boom Done
+    Modified for 4 digets and taylored to Team 2619's liking
+    by:  Mike Rehberg   Feb, 2014
+*/
+
 
 void(* resetFunc) (void) = 0; //declare reset function at address 0, from http://www.instructables.com/id/two-ways-to-reset-arduino-in-software/step2/using-just-software/
 
@@ -34,10 +40,10 @@ const int modepin = 7;
 const int segdisp[11] = { 
   187, 160, 55, 181, 172, 157, 159, 176, 191, 189, 190 };
 //const int ready[3] = {0b00000110, 0b10100111, 0b10101101}; // rdy
-const int ready[3] = {
-  0b10011000, 0b10110101, 0b10100111}; //ri3d
-const int inf[3] = {
-  0b10000000, 0b10000110, 0b00011110}; // inf
+const int ready[4] = {
+  55, 159, 160, 189}; // "2619"
+const int inf[4] = {
+  0b01000000, 0b10000000, 0b10000110, 0b00011110}; // .inf
 
 // amount of time on the clock
 int minutes = 2;
@@ -80,7 +86,7 @@ void setup()
   for (i = 0; i < 9; i++)
   {
     digitalWrite(latchpin, LOW);
-    shiftOut(datapin, clockpin, MSBFIRST, ready[i%3]);
+    shiftOut(datapin, clockpin, MSBFIRST, ready[i%4]);
     digitalWrite(latchpin, HIGH);
   }
 
@@ -195,14 +201,15 @@ void decrementCounter() {
 
 void clearDisplay() {
   digitalWrite(latchpin, LOW);
-  for(int i = 0; i < 3; i++) {
+  for(int i = 0; i < 4; i++) {
     shiftOut(datapin, clockpin, MSBFIRST, 0);
   }
   digitalWrite(latchpin, HIGH);
 }
 
-void displayNumber(int number) // Assuming three
+void displayNumber(int number) // Assuming four
 {
+  shiftOut(datapin, clockpin, MSBFIRST, 0);  // blank out the first display
   displayNumberForOne(number);
   displayNumberForOne(number);
   displayNumberForOne(number);
@@ -225,15 +232,16 @@ void displayNumberForOne(int number) {
     for (i = 0; i < 9; i++)
     {
       digitalWrite(latchpin, LOW);
-      shiftOut(datapin, clockpin, MSBFIRST, inf [i%3]);
+      shiftOut(datapin, clockpin, MSBFIRST, inf [i%4]);
       digitalWrite(latchpin, HIGH);
     }
   }
   digitalWrite(latchpin, HIGH);
 }
 
-void displayTime() // assuming three displays
+void displayTime() // assuming four displays
 {
+  shiftOut(datapin, clockpin, MSBFIRST, 0);  // blank out the first display
   displayTimeForOne();
   displayTimeForOne();
   displayTimeForOne();
