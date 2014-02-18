@@ -40,8 +40,8 @@ const int modepin = 7;
 const int segdisp[11] = { 
   187, 160, 55, 181, 172, 157, 159, 176, 191, 189, 190 };
 //const int ready[3] = {0b00000110, 0b10100111, 0b10101101}; // rdy
-const int ready[4] = {
-  55, 159, 160, 189}; // "2619"
+//const int ready[4] = {
+//  55, 159, 160, 189}; // "2619"
 const int inf[4] = {
   0b01000000, 0b10000000, 0b10000110, 0b00011110}; // .inf
 
@@ -82,14 +82,15 @@ void setup()
   myInvertedConn.begin(9600);
 
   clearDisplay();
-
+  /*
   for (i = 0; i < 9; i++)
   {
     digitalWrite(latchpin, LOW);
     shiftOut(datapin, clockpin, MSBFIRST, ready[i%4]);
     digitalWrite(latchpin, HIGH);
   }
-
+  */
+  displayNumberForOne(2619);
   while (digitalRead(startpin) == WAIT); // hang out until we are told to start
 }
 
@@ -216,6 +217,7 @@ void displayNumber(int number) // Assuming four
 }
 
 void displayNumberForOne(int number) {
+  /*
   int hun = number/100;
   int i;
 
@@ -235,7 +237,12 @@ void displayNumberForOne(int number) {
       shiftOut(datapin, clockpin, MSBFIRST, inf [i%4]);
       digitalWrite(latchpin, HIGH);
     }
-  }
+  }*/
+  digitalWrite(latchpin, LOW);
+  displayDigitForOne(segdisp[number/1000%10]);
+  displayDigitForOne(segdisp[number/100%10]);
+  displayDigitForOne(segdisp[number/10%10]);
+  displayDigitForOne(segdisp[number%10]);
   digitalWrite(latchpin, HIGH);
 }
 
@@ -256,6 +263,7 @@ void displayTimeForOne(){
   }
   else
   {
+    displayDigitForOne(segdisp[minutes/10]);
     displayDigitForOne(segdisp[minutes]);
     displayDigitForOne(segdisp[seconds/10]);
   }
