@@ -2,6 +2,16 @@
     seven_segment display from Boom Done
     Modified for 4 digets and taylored to Team 2619's liking
     by:  Mike Rehberg   Feb, 2014
+    
+    I/O List:
+    
+    2    Latch Pin to Shift Registers
+    3    Clock Pin to Shift Registers
+    4    Data Pin to Shift Registers
+    5    Start Pin from cRIO (Raise at the start of the match)
+    7    Mode Pin from cRIO  (Low = Timer, High = Distance reading)
+    10   RX Pin from Ultrasonic Sensor
+    11   TX Pin (Not Used)
 */
 
 
@@ -20,7 +30,7 @@ const int modepin = 7;
 
 #define WAIT LOW
 
-//   c.bafged
+//   "c.bafged" when display is Inverted
 // 0-10111011-187
 // 1-10100000-160
 // 2-00110111-55
@@ -41,7 +51,6 @@ const int segdisp[11] = {
   187, 160, 55, 181, 172, 157, 159, 176, 191, 189, 190 };
 //const int ready[3] = {0b00000110, 0b10100111, 0b10101101}; // rdy
 //const int ready[4] = {
-//  55, 159, 160, 189}; // "2619"
 const int inf[4] = {
   0b01000000, 0b10000000, 0b10000110, 0b00011110}; // .inf
 
